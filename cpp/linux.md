@@ -227,7 +227,7 @@ linux 命令，实际上本体是一个个的二进制程序。
 
 语法：`echo 输出的内容`
 
-+ 无选项，只有一个参数，表示要输出的内容，输出的内容尽量用 “ ” 来包括
++ 无选项，可以有多个参数，表示要输出的内容，输出的内容尽量用 “ ” 来包括
 
 ### 反引号``
 
@@ -541,6 +541,42 @@ linux 系统常用有两种压缩格式：
 + -d , 指定要解压去的位置
 + 参数, 被解压的zip压缩包文件;
 
+## 花括号{}
+
+```bash
+convert image.{png,jpg}
+# 会展开为
+convert image.png image.jpg
+
+cp /path/to/project/{foo,bar,baz}.sh /newpath
+# 会展开为
+cp /path/to/project/foo.sh /path/to/project/bar.sh /path/to/project/baz.sh /newpath
+
+# 也可以结合通配使用
+mv *{.py,.sh} folder
+# 会移动所有 *.py 和 *.sh 文件
+
+mkdir foo bar
+
+# 下面命令会创建foo/a, foo/b, ... foo/h, bar/a, bar/b, ... bar/h这些文件
+touch {foo,bar}/{a..h}
+touch foo/x bar/y
+# 比较文件夹 foo 和 bar 中包含文件的不同
+diff <(ls foo) <(ls bar)
+# 输出
+# < x
+# ---
+# > y
+```
+
+## 在学习过程中遇到的命令
+
+### 查看文件类型
+
+基础用法:
+
+`file 文件名`,用于查看该文件的类型.
+
 # vim编辑器
 
 vi \ vim 编辑器，就是命令行模式下的文本编辑器，用来编辑文件。
@@ -589,6 +625,10 @@ vim兼容全部vi的功能，所以直接使用vim命令即可
 
 + 在输入模式下无其他指令使用，该模式用于自由编辑.
 
+> x       删除光标处的字符
+
+![image-20240906170536118](../../../AppData/Roaming/Typora/typora-user-images/image-20240906170536118.png)
+
 ## 底线命令模式
 
 在命令模式内，输入 `:`，进入该模式.
@@ -606,3 +646,104 @@ vim兼容全部vi的功能，所以直接使用vim命令即可
 > :set nu  显示行号
 >
 > :set paste 设置粘贴模式
+
+## 查找模式
+
+1. 在normal 模式下按下 `/` 进入查找模式.
+2. 输入要查找的字符串,vim会跳转到第一个匹配的位置.
+3. 按下n查找下一个,按下N查找上一个.
+4. vim 查找支持正则表达式.
+
+# Shell脚本
+
+## 变量
+
+```bash
+#定义变量:
+foo=bar    
+echo $foo  #通过$符访问变量
+#打印 bar
+
+#在bash中要注意空格;shell脚本中的空格起分割参数的作用；
+foo = bar   #出错,因为这里shell会将 foo 当作程序而 = 和 bar 当作foo这个程序的参数.
+
+echo "$foo"     #bash中的字符串通过''和""来定义,以''定义的字符串为原义字符串,其中的变量不会被转义;而""定义的字符串会 将 # 打印 bar       #变量值进行替换
+echo '$foo'
+# 打印 $foo
+
+foo=$(pwd)     #pwd的执行结果替换了$(pwd)
+echo $foo
+# 打印当前工作目录
+```
+
+> - `$0` - 脚本名
+> - `$1` 到 `$9` - 脚本的参数。 `$1` 是第一个参数，依此类推。
+> - `$@` - 所有参数
+> - `$#` - 参数个数
+> - `$?` - 前一个命令的返回值
+> - `$$` - 当前脚本的进程识别码
+> - `!!` - 完整的上一条命令，包括参数。常见应用：当你因为权限不足执行命令失败时，可以使用 `sudo !!`再尝试一次。
+> - `$_` - 上一条命令的最后一个参数。如果你正在使用的是交互式 shell，你可以通过按下 `Esc` 之后键入 . 来获取这个值。
+
+## 运算符
+
+命令执行后,如果正常执行,则可以得到返回值为0的退出码 ; 其他所有非0的返回值都表示有错误发生.
+
+````bash
+false || echo "Oops, fail"
+# Oops, fail
+
+true || echo "Will not be printed"
+#
+
+true && echo "Things went well"
+# Things went well
+
+false && echo "Will not be printed"
+#
+
+false ; echo "This will always run"    #这里这个;号相当于进行换行了
+# This will always run
+````
+
+## 进程替换
+
+```bash
+diff <(ls dir1) <(ls dir2)
+
+在这个命令中：
+ls dir1 会列出 dir1 目录的内容。
+ls dir2 会列出 dir2 目录的内容。
+<(ls dir1) 和 <(ls dir2) 会分别创建包含 ls dir1 和 ls dir2 输出的虚拟文件。
+diff 命令会比较这两个虚拟文件的内容，显示它们之间的差异。
+```
+
+## 语法
+
+if语句
+
+```bash
+if condition; then
+    # 如果条件为真，执行这里的代码
+else
+    # 如果条件为假，执行这里的代码
+fi  #用于结束if语句块
+```
+
+for循环
+
+```bash
+for variable in list; do
+    # 循环体，重复执行的代码
+done
+```
+
+while循环
+
+```bash
+while condition; do
+    # 循环体，重复执行的代码
+done
+```
+
+查看比较符手册: man test  

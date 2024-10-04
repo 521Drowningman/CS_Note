@@ -52,7 +52,7 @@ git push –rebase   是fetch和rebase 的简写
 
 
 
-> ```
+> ```bash
 > git remote add origin 远程仓库的URL
 > ```
 >
@@ -80,9 +80,10 @@ git commit -m "首次提交项目
 
 ```
 git push -u origin master
+git push <远程主机名> <本地分支名>:<远程分支名>
 ```
 
-```
+```bash
 # 查看当前仓库是否有该分支
 git branch -a
 # 或者查看远程分支：
@@ -102,4 +103,20 @@ git push origin --delete [branch_name]
  
  git pull origin main --allow-unrelated-histories
 ```
+
+![image-20240806102632982](../../../AppData/Roaming/Typora/typora-user-images/image-20240806102632982.png)
+
+````bash
+git config   #可以用来配置信息,如用户名,邮件信息
+git init     #进行初始化,告诉git这个文件需要版本控制
+git status   #查看处于操作的那个状态
+git add      #将工作区的文件添加到缓存区
+git commit   #将缓存区的文件提交到本地仓库
+git log      #查看项目版本
+.gitignore   #将不想提交的文件的名字写入该文件中后,就可以避免某些文件被提交
+git merge xx #将其他分支合并到现在所处的分支上来.
+git remote add 远程仓库的别名 地址  #适用于先有本地仓库,而远程仓库是后来所建造
+git branch -m xx  #将当前的分支名修改为xx
+git remote -v #查看有关联的远程仓库
+````
 
