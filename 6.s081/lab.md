@@ -58,3 +58,8 @@ a7的值为7,由`initcode.S`中代码可知a7存储的是 `SYS_exec` , 在`sysca
 问题3:`What was the previous mode that the CPU was in?`
 
 由上面的十六进制展开为二进制代码后,可知第八位为0,所以之前的模式是用户模式.
+
+### 0x4
+
+800020b6:	00002683          	lw	a3,0(zero) # 0 <_entry-0x80000000>
+

@@ -118,5 +118,9 @@ git merge xx #将其他分支合并到现在所处的分支上来.
 git remote add 远程仓库的别名 地址  #适用于先有本地仓库,而远程仓库是后来所建造
 git branch -m xx  #将当前的分支名修改为xx
 git remote -v #查看有关联的远程仓库
+git config user.name  #可以查看当前git配置的用户名
+git config user.email #可以查看当前git配置的邮箱
+git config --global user.name 用户名 #进行用户名配置
+git config --global user.email 邮箱 #进行邮箱配置
 ````
 
